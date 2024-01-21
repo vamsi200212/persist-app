@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/home_mn"
+            android:icon="@mipmap/ic_baseline_home_24"
+            android:title="Dashboard"/>
+        <item android:id="@+id/ev_stations_mn"
+            android:icon="@mipmap/electric"
+            android:title="EV Stations"/>
+        <item android:id="@+id/speed_mn"
+            android:icon="@mipmap/ic_baseline_speed_24"
+            android:title="Speedometer"/>
+        <item android:id="@+id/profile_mn"
+            android:icon="@drawable/ic_baseline_person_24"
+            android:title="Dashboard"/>
+    </group>
+</menu>
