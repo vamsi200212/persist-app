@@ -1,14 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.SpeedometerFragment">
+    tools:context=".fragments.SpeedometerFragment"
+    android:background="#161F29">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="25dp"
+        android:text="Speedometer"
+        android:textSize="28sp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/lato_bold"/>
 
-</FrameLayout>
+    <ImageView
+        android:id="@+id/gaugeBackground"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/circular_gauge_background"
+        android:layout_marginTop="10dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerInside"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="304dp"
+        android:layout_height="306dp"
+        android:layout_centerInParent="true"
+        android:max="200"
+        android:progress="0"
+        android:progressDrawable="@drawable/circular_progress" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:fontFamily="sans-serif-medium"
+        android:text="0 km/h"
+        android:textColor="#D3FC51"
+        android:textSize="24sp" />
+
+</RelativeLayout>

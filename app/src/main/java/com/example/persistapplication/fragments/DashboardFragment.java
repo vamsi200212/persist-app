@@ -5,10 +5,13 @@ import android.os.Bundle;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,12 +76,22 @@ public class DashboardFragment extends Fragment {
     DashboardDataModel model;
     TextView tempVal,latitude,longitude,acx,acy,acz,gyx,gyy,gyz,pitch,roll,yaw;
     CardView allParaLay,allParaCard;
+    ImageView down;
+    private Handler dataFetchHandler;
+    private static final long FETCH_INTERVAL = 2000; // Fetch every 2 seconds
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
+
+        // Initialize the handler
+        dataFetchHandler = new Handler(Looper.getMainLooper());
+
+        // Start fetching data
+        startFetchingData();
 
 //        binding = FragmentDashboardBinding.inflate(getLayoutInflater());
         allParaLay = view.findViewById(R.id.all_para_lay);
@@ -95,6 +108,7 @@ public class DashboardFragment extends Fragment {
         pitch = view.findViewById(R.id.pitch);
         roll = view.findViewById(R.id.roll);
         yaw = view.findViewById(R.id.yaw);
+        down = view.findViewById(R.id.down_arrow);
 
         model = new DashboardDataModel();
         getDataFromDB();
@@ -117,17 +131,30 @@ public class DashboardFragment extends Fragment {
             public void onClick(View view) {
                 if(allParaLay.getVisibility()==View.GONE){
                     allParaLay.setVisibility(View.VISIBLE);
+                    down.setRotation(90);
                 }else{
                     allParaLay.setVisibility(View.GONE);
+                    down.setRotation(-90);
                 }
             }
         });
         return view;
     }
 
+    private void startFetchingData() {
+        dataFetchHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getDataFromDB();
+                // Schedule the next fetch after the interval
+                dataFetchHandler.postDelayed(this, FETCH_INTERVAL);
+            }
+        }, FETCH_INTERVAL);
+    }
+
     public void getDataFromDB() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8082/")  // Adjusted base URL
+                .baseUrl("http://13.235.71.201:86/")  // Adjusted base URL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -177,5 +204,15 @@ public class DashboardFragment extends Fragment {
     public interface GetDataApi {
         @GET("api/VD/TransID")  // Adjusted path
         Call<DashboardDataModel> getData(@Query("TransID") int transid);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        // Stop fetching data when the fragment is destroyed
+        if (dataFetchHandler != null) {
+            dataFetchHandler.removeCallbacksAndMessages(null);
+        }
     }
 }

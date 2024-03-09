@@ -1,0 +1,33 @@
+<!-- rounded_progress.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Background Circle -->
+    <item>
+        <shape
+            android:shape="oval">
+            <solid android:color="#161F29" />
+        </shape>
+    </item>
+
+    <!-- Progress Circle with Gradient Color -->
+    <item android:id="@android:id/progress">
+        <rotate
+            android:fromDegrees="160"
+            android:toDegrees="360">
+            <shape
+                android:shape="ring"
+                android:innerRadiusRatio="3"
+                android:thicknessRatio="12"
+                android:useLevel="true">
+                <gradient
+                    android:startColor="#D3FC51"
+                    android:centerColor="#FFC107"
+                    android:endColor="#FF0000"
+                    android:centerX="0.33"
+                    android:centerY="0.33"
+                    android:type="sweep"/>
+            </shape>
+        </rotate>
+    </item>
+
+</layer-list>

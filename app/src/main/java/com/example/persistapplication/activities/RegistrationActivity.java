@@ -93,7 +93,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private void performAuth(){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8082/")
+                .baseUrl("http://13.235.71.201:86/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -119,7 +119,7 @@ public class RegistrationActivity extends AppCompatActivity {
             registrationModel.setUserName(userName);
             registrationModel.setEmail(email);
             registrationModel.setPassword(password);
-            registrationModel.setActive(1);
+            registrationModel.setIsActive(1);
 
             Call<LoginResponse> call = registrationApi.loginUser(registrationModel);
 

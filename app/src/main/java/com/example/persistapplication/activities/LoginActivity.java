@@ -6,9 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.persistapplication.ApiService;
+import com.example.persistapplication.RetrofitClient;
 import com.example.persistapplication.databinding.ActivityLoginBinding;
 import com.example.persistapplication.models.LoginResponse;
 import com.example.persistapplication.models.RegistrationModel;
@@ -44,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8082/")
+                .baseUrl("http://13.235.71.201:86/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -63,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
                 registrationModel.setUserName("");
                 registrationModel.setEmail(email);
                 registrationModel.setPassword(password);
-                registrationModel.setActive(1);
+                registrationModel.setIsActive(1);
 
                 Call<LoginResponse> call = registrationApi.loginUser(registrationModel);
 
@@ -72,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                         LoginResponse result = response.body();
 
-                        if(result.getResponse().equals("Data Found")){
+                        if(result!=null&&result.getResponse().equals("Data Found")){
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString(Email,email);
                             editor.putString(Password,password);
@@ -80,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
                             editor.apply();
                             startActivity(new Intent(LoginActivity.this,MainActivity.class));
                             finishAffinity();
-                        }else if(result.getResponse().equals("Invalid User")){
+                        }else if(result!=null&&result.getResponse().equals("Invalid User")){
                             binding.edtEmailAddress.setError("Invalid User or Password");
                         }
                     }
