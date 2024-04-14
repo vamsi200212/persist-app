@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.persistapplication.R;
+import com.example.persistapplication.activities.MainActivity;
 import com.example.persistapplication.models.DashboardDataModel;
 
 import retrofit2.Call;
@@ -75,7 +76,7 @@ public class DashboardFragment extends Fragment {
 
     DashboardDataModel model;
     TextView tempVal,latitude,longitude,acx,acy,acz,gyx,gyy,gyz,pitch,roll,yaw;
-    CardView allParaLay,allParaCard;
+    CardView allParaLay,allParaCard,findStation;
     ImageView down;
     private Handler dataFetchHandler;
     private static final long FETCH_INTERVAL = 2000; // Fetch every 2 seconds
@@ -93,9 +94,9 @@ public class DashboardFragment extends Fragment {
         // Start fetching data
         startFetchingData();
 
-//        binding = FragmentDashboardBinding.inflate(getLayoutInflater());
         allParaLay = view.findViewById(R.id.all_para_lay);
         allParaCard = view.findViewById(R.id.all_para_card);
+        findStation = view.findViewById(R.id.find_station);
         tempVal = view.findViewById(R.id.temp_val);
         latitude = view.findViewById(R.id.latitude);
         longitude = view.findViewById(R.id.longitude);
@@ -113,19 +114,6 @@ public class DashboardFragment extends Fragment {
         model = new DashboardDataModel();
         getDataFromDB();
 
-//        model.setLongitude(1.234f);
-//        model.setLatitude(1.234f);
-//        model.setAcX(23);
-//        model.setAcY(12);
-//        model.setAcZ(23);
-//        model.setGyX(12);
-//        model.setGyY(23);
-//        model.setGyZ(12);
-//        model.setAmbientTemp(123);
-//        model.setPitch(456);
-//        model.setRoll(678);
-//        model.setYaw(2837);
-
         allParaCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -138,6 +126,19 @@ public class DashboardFragment extends Fragment {
                 }
             }
         });
+
+        findStation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.bottomNavigationView.setSelectedItemId(R.id.electric_btm);
+                getActivity().getSupportFragmentManager().popBackStack();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frame, new EVStationsFragment(), "EVStationsFragment")
+                        .addToBackStack("EVStationsFragment")
+                        .commit();
+            }
+        });
+
         return view;
     }
 
@@ -188,17 +189,17 @@ public class DashboardFragment extends Fragment {
 
     public void setDataToViews(){
         tempVal.setText(model.getAmbientTemp()+"");
-        latitude.setText("Latitude : "+model.getLatitude());
-        longitude.setText("Longitude : "+model.getLongitude());
-        acx.setText("AcX : "+model.getAcX());
-        acy.setText("AcY : "+model.getAcY());
-        acz.setText("AcZ : "+model.getAcZ());
-        gyx.setText("GyX : "+model.getGyX());
-        gyy.setText("GyY : "+model.getGyY());
-        gyz.setText("GyZ : "+model.getGyZ());
-        pitch.setText("Pitch : "+model.getPitch());
-        roll.setText("Roll : "+model.getRoll());
-        yaw.setText("Yaw : "+model.getYaw());
+        latitude.setText(""+model.getLatitude());
+        longitude.setText(""+model.getLongitude());
+        acx.setText(""+model.getAcX());
+        acy.setText(""+model.getAcY());
+        acz.setText(""+model.getAcZ());
+        gyx.setText(""+model.getGyX());
+        gyy.setText(""+model.getGyY());
+        gyz.setText(""+model.getGyZ());
+        pitch.setText(""+model.getPitch());
+        roll.setText(""+model.getRoll());
+        yaw.setText(""+model.getYaw());
     }
 
     public interface GetDataApi {

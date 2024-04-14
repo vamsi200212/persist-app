@@ -50,6 +50,7 @@ public class RegistrationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Initial Setup
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
@@ -73,13 +74,6 @@ public class RegistrationActivity extends AppCompatActivity {
                 performAuth();
             }
         });
-
-//        left.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                onBackPressed();
-//            }
-//        });
 
         already.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,7 +147,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private void sendUserToNextActivity() {
-        Intent intent = new Intent(RegistrationActivity.this,MainActivity.class);
+        Intent intent = new Intent(RegistrationActivity.this,PermissionGrantActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finishAffinity();

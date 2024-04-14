@@ -1,66 +1,100 @@
 package com.example.persistapplication.fragments;
 
+import static com.example.persistapplication.RetrofitClient.BASE_URL;
+
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.persistapplication.ApiService;
+import com.example.persistapplication.EVStationsAdapter;
 import com.example.persistapplication.R;
+import com.example.persistapplication.RetrofitClient;
+import com.example.persistapplication.models.DashboardDataModel;
+import com.example.persistapplication.models.EVStationModel;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link EVStationsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.ObjIntConsumer;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
+
 public class EVStationsFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public EVStationsFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment EVStationsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static EVStationsFragment newInstance(String param1, String param2) {
-        EVStationsFragment fragment = new EVStationsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    RecyclerView recyclerView;
+    List<EVStationModel> list;
+    EVStationsAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_e_v_stations, container, false);
+        View view = inflater.inflate(R.layout.fragment_e_v_stations, container, false);
+
+        list = new ArrayList<>();
+        recyclerView = view.findViewById(R.id.rec_view);
+
+        getEVStations();
+        return view;
+    }
+
+    public void getEVStations() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://13.235.71.201:86/")  // Adjusted base URL
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        GetDataApi api = retrofit.create(GetDataApi.class);
+
+        Call<List<EVStationModel>> call = api.getData();
+
+        call.enqueue(new Callback<List<EVStationModel>>() {
+            @Override
+            public void onResponse(Call<List<EVStationModel>> call, Response<List<EVStationModel>> response) {
+                if (response.isSuccessful()) {
+                    list = response.body();
+                    adapter = new EVStationsAdapter(list,getContext());
+
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.setNestedScrollingEnabled(false);
+                    recyclerView.setItemAnimator(null);
+
+                    Log.d("myTag",list+"");
+                    adapter.notifyDataSetChanged();
+                } else {
+                    // Handle unsuccessful response
+                    Toast.makeText(getContext(), "Request Failed: " + response.code(), Toast.LENGTH_LONG).show();
+                    Log.e("API Error", "Code: " + response.code() + ", Message: " + response.message());
+                }
+            }
+            @Override
+            public void onFailure(Call<List<EVStationModel>> call, Throwable t) {
+                // Handle failure
+                Toast.makeText(getContext(), "Request Failed: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Log.e("API Error", "Failure: " + t.getMessage());
+            }
+
+        });
+    }
+
+    public interface GetDataApi {
+        @GET("api/CStation")  // Adjusted path
+        Call<List<EVStationModel>> getData();
     }
 }

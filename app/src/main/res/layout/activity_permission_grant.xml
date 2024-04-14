@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.PermissionGrantActivity"
+    android:background="#161F29">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/img_1"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:src="@drawable/persist_ev_img_1"
+            android:scaleType="centerCrop"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <TextView
+            android:id="@+id/let_us_txt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Let us enhance your experience."
+            android:textColor="@color/white"
+            android:fontFamily="@font/lato"
+            app:layout_constraintTop_toBottomOf="@id/img_1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            android:layout_marginTop="35dp"
+            android:textSize="22sp"/>
+
+        <LinearLayout
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            android:background="@drawable/divider_gradient"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/let_us_txt"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:id="@+id/give_perm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Grant access to your location for personalized services."
+            android:textColor="@color/white"
+            android:fontFamily="@font/lato_bold"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="20dp"
+            android:textSize="14sp"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/give_permission_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Give Permissions"
+            android:fontFamily="@font/lato_bold"
+            android:background="@drawable/white_button_bg"
+            android:textAllCaps="false"
+            app:layout_constraintTop_toBottomOf="@id/give_perm"
+            app:layout_constraintLeft_toLeftOf="@id/give_perm"
+            android:layout_marginTop="45dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/loc_serv_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Turn On Location Services"
+            android:fontFamily="@font/lato_bold"
+            android:background="@drawable/white_button_bg"
+            android:textAllCaps="false"
+            app:layout_constraintTop_toBottomOf="@id/give_permission_btn"
+            app:layout_constraintLeft_toLeftOf="@id/give_perm"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="100dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/proceedBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/loc_serv_btn"
+            app:layout_constraintLeft_toRightOf="@id/loc_serv_btn"
+            app:layout_constraintBottom_toBottomOf="@id/loc_serv_btn"
+            app:layout_constraintRight_toRightOf="parent"
+            android:src="@drawable/white_tick"
+            app:backgroundTint="@color/white"
+            android:contentDescription="Next"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

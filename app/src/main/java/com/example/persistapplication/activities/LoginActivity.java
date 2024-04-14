@@ -1,5 +1,7 @@
 package com.example.persistapplication.activities;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -39,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Initial Setup
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
@@ -53,21 +56,26 @@ public class LoginActivity extends AppCompatActivity {
 
         RegistrationApi registrationApi = retrofit.create(RegistrationApi.class);
 
+        sharedPreferences = getSharedPreferences(fileName, Context.MODE_PRIVATE);
+
+
+        //Login Button to Main Activity
         binding.btnStartRiding.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                // User Input
                 email = binding.edtEmailAddress.getText().toString();
                 password = binding.edtPassword.getText().toString();
 
-                sharedPreferences = getSharedPreferences(fileName, Context.MODE_PRIVATE);
-
+                // Request Model
                 RegistrationModel registrationModel = new RegistrationModel();
                 registrationModel.setUserName("");
                 registrationModel.setEmail(email);
                 registrationModel.setPassword(password);
                 registrationModel.setIsActive(1);
 
+                // API Call Code
                 Call<LoginResponse> call = registrationApi.loginUser(registrationModel);
 
                 call.enqueue(new Callback<LoginResponse>() {
@@ -81,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                             editor.putString(Password,password);
                             editor.putString(UserName,username);
                             editor.apply();
-                            startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                            startActivity(new Intent(LoginActivity.this,PermissionGrantActivity.class));
                             finishAffinity();
                         }else if(result!=null&&result.getResponse().equals("Invalid User")){
                             binding.edtEmailAddress.setError("Invalid User or Password");

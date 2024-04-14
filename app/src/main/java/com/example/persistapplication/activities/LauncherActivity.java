@@ -26,18 +26,23 @@ public class LauncherActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(getSupportActionBar()!=null){
+        // Initial Setup
+        if(getSupportActionBar()!=null) {
             getSupportActionBar().hide();
         }
 
         binding = ActivityLauncherBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.your_action_bar_color)));
+        getSupportActionBar().setTitle("");
+
+        sharedPreferences = getSharedPreferences(fileName, Context.MODE_PRIVATE);
+
+        //Listener to Next Activity
         binding.btnStartRiding.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sharedPreferences = getSharedPreferences(fileName, Context.MODE_PRIVATE);
-
                 String email = sharedPreferences.getString(Email, "");
                 String password = sharedPreferences.getString(Password, "");
                 String username = sharedPreferences.getString(UserName, "");
@@ -47,15 +52,12 @@ public class LauncherActivity extends AppCompatActivity {
                     finishAffinity();
                 }
                 else{
-                    startActivity(new Intent(LauncherActivity.this, MainActivity.class));
+                    startActivity(new Intent(LauncherActivity.this, PermissionGrantActivity.class));
                     finishAffinity();
                 }
 
             }
         });
-
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.your_action_bar_color)));
-        getSupportActionBar().setTitle("");
 
     }
 }

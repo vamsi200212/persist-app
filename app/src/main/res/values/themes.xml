@@ -3,7 +3,7 @@
     <style name="Base.Theme.PersistApplication" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Customize your light theme here. -->
         <item name="colorPrimaryDark">#000000</item>
-        <item name="colorPrimary">#000000</item>
+        <item name="colorPrimary">#161F29</item>
         <item name="android:navigationBarColor">#000000</item>
     </style>
 
