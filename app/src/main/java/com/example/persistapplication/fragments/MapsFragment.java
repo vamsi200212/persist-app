@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
@@ -44,6 +46,8 @@ public class MapsFragment extends Fragment {
             mMap.addMarker(markerOptions);
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,16f));
+            
+            setMapStyle();
         }
 
         /**
@@ -56,6 +60,13 @@ public class MapsFragment extends Fragment {
          * user has installed Google Play services and returned to the app.
          */
     };
+
+    private void setMapStyle() {
+        boolean result = mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(),R.raw.map_style));
+        if(!result){
+            Log.e("MAP","Error set map style");
+        }
+    }
 
     @Nullable
     @Override
